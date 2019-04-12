@@ -19,6 +19,7 @@ maxDepth = int(opts.depth)
 
 print(maxDepth)
 
+#TODO pass path to the klee-last folder as argument
 for filename in glob('klee-last/*.pc'):
     filesToInclude.append(os.path.splitext(filename)[0])
 
