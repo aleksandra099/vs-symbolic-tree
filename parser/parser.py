@@ -36,16 +36,31 @@ tokens = [
 	'XOR',
 	'SHL',
 	#'ASHR',
-	'LSHR'
+	'LSHR',
+
+	'REFN',
+	'DOTS',
+	'READ'
 	
 ]
 
+t_DOTS = r'\:'
 t_LP = r'\('
 t_RP = r'\)'
 #t_TRUE = r'true'
 
 t_ignore = r' '
 
+def t_READ(t):
+	r'Read(LSB|MSB)?'
+	t.type = 'READ'
+	return t
+
+def t_REFN(t):
+	r'N[0-9]+'
+	t.type = 'REFN'
+	return t
+###
 def t_ADD(t):
 	r'Add'
 	t.type = 'ADD'
@@ -155,7 +170,7 @@ def t_HEX(t):
 	return t
 '''
 def t_FLOAT(t):
-	r'[+-]?(fp)?[0-9]+([.].*)?'
+	r'[+-]?(fp)?\d+\.\d+'
 	t.value = str(t.value)
 	return t
 
@@ -166,6 +181,7 @@ def t_INT(t):
 
 def t_NAME(t):
 	r'[a-zA-Z_][a-zA-Z0-9._]*'
+	#t.value = str(t.value)
 	t.type = 'NAME'
 	return t
 
@@ -181,7 +197,7 @@ precedence = (
 
 #testiramo pojedinacne tokene
 
-lexer.input("false")
+lexer.input("N0")
 
 while True:
 	tok = lexer.token()
@@ -215,6 +231,18 @@ def p_expression_eq_false(p):
 	'''
 	p[0] = (p[2],p[3],p[4])
 
+def p_expression_refn(p):
+	'''
+	expression : REFN DOTS LP READ TYPE INT NAME RP
+	'''
+	p[0] = ('ref',p[1],p[7])
+
+def p_expression_refn_var(p):
+	'''
+	expression : REFN	
+	'''
+	p[0] = ('refn',p[1])
+
 def p_expression_add(p):
 	'''
 	expression : LP ADD expression expression RP
@@ -239,7 +267,7 @@ def p_expression_and(p):
 def p_expression_int_float(p):
 	'''
 	expression : INT
-		| FLOAT		
+		| FLOAT	
 	'''
 	p[0] = p[1]
 
@@ -299,6 +327,14 @@ def run(p):
 		 	return run(p[1]) + ' << ' + run(p[2])
 		elif p[0] == 'LShr' or p[0] == 'AShr':
 		 	return run(p[1]) + ' >> ' + run(p[2])
+		elif p[0] == 'ref':
+			env[p[1]] = run(p[2])
+			return p[2]
+		elif p[0] == 'refn':
+			if p[1] not in env:
+				return 'Undeclared variable found!'
+			else:
+		  		return env[p[1]]
 	else:
 		return p
 
