@@ -13,13 +13,14 @@ maxDepth = None
 
 op = OptionParser("usage: %prog maxDepth, default = MAX")
 op.add_option('-d', '--depth', dest='depth', default=None)
+op.add_option('-o', '--output', dest='pdfOutput', default=None)
 opts,remainder = op.parse_args()
 
 maxDepth = int(opts.depth)
+pdfOutput = opts.pdfOutput
 
 print(maxDepth)
 
-#TODO pass path to the klee-last folder as argument
 for filename in glob('klee-last/*.pc'):
     filesToInclude.append(os.path.splitext(filename)[0])
 
@@ -67,7 +68,7 @@ class TreeNode:
         self.instruction = instruction	#instrukcija koja se upisuje
 
 
-g = Digraph('g', filename='sym_tree', node_attr={'shape': 'record', 'height': '.1'})
+g = Digraph('g', filename=pdfOutput, node_attr={'shape': 'record', 'height': '.1'})
 root = TreeNode("root", 0, None, None)
 g.node('node0', '')
 nodeNumIt = 1
