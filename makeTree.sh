@@ -1,5 +1,22 @@
 #/!bin/bash
 
+function usage {
+	echo -e "\nUsage: $0 [absoulte_path_to_c_file] [absoulte_path_to_save_image]"
+}
+
+
+if [ $# -le 1 ]
+then
+	usage
+	exit 1
+fi
+
+if [[ ($# == "--help") || $# == "-h" ]]
+then
+	usage
+	exit 0
+fi
+
 myclang="~/build/llvm/Release/bin/clang"
 myklee="~/build/klee/Release+Asserts/bin/klee"
 picture_path="$2"
