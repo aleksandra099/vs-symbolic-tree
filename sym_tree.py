@@ -7,6 +7,10 @@ from pyparsing import nestedExpr
 from optparse import OptionParser
 import itertools
 
+from Parser.parser import *
+from io import StringIO
+import sys
+
 paths = []
 filesToInclude = []
 maxDepth = None
@@ -78,8 +82,19 @@ for path, pathInstruction in zip(paths, pathsInstructions):
     node = root
     #jedna putanje se mecuje sa njenom istrukcijom
     for branch, instruction in zip(path, pathInstruction):
-        repl = re.search(r'\((Read.SB.+?)\)', instruction).group(1).split()[-1]
-        readableInstruction = re.sub(r'\((Read.SB.+?)\)', repl, instruction)
+        #repl = re.search(r'\((Read.SB.+?)\)', instruction).group(1).split()[-1]
+        #readableInstruction = re.sub(r'\((Read.SB.+?)\)', repl, instruction)
+	
+        #parsiramo instrukcije, fja parser radi print pa preusmeravamo stdout stream
+        readableInstructionTemp = instruction
+        old_stdout = sys.stdout
+        sys.stdout = mystdout = StringIO()
+        readableInstruction = parser.parse(readableInstructionTemp)
+        readableInstruction = mystdout.getvalue()
+        sys.stdout = old_stdout
+        #provera ispisuje parsiranje na stdout
+        parser.parse(readableInstructionTemp)
+
         side = 'left' if branch else 'right'
         if getattr(node, side) is not None: #ako taj nod nema to dete
             node = getattr(node, side)
@@ -108,7 +123,7 @@ def preorder(node, level=0):
     if node is None:
         return
     #Inicijalizacija
-    g.node('node'+str(node.numIt), '')
+    g.node('node'+str(node.numIt), node.instruction)
     #debugging print
     #print(" " * (level*4), node.cond, node.numIt, node.instruction)
     preorder(node.left, level+1)
