@@ -310,19 +310,19 @@ def run(p):
 	global env
 	if type(p) == tuple:
 		if p[0] == 'Eq' and p[1] == 'false':
-			return '!(' + run(p[2]) + ')'
+			return 'not (' + run(p[2]) + ')'
 		elif p[0] == 'Eq':
-			return run(p[1]) + ' == ' + run(p[2])
+			return run(p[1]) + ' equal ' + run(p[2])
 		elif p[0] == 'Ne':
-			return run(p[1]) + ' != ' + run(p[2])
+			return run(p[1]) + ' not equal ' + run(p[2])
 		elif p[0] == 'Ult' or p[0] == 'Slt':
-			return run(p[1]) + ' less then ' + run(p[2])
+			return run(p[1]) + ' less than ' + run(p[2])
 		elif p[0] == 'Ule' or p[0] == 'Sle':
-			return run(p[1]) + ' less then or equal ' + run(p[2])
+			return run(p[1]) + ' less than or equal ' + run(p[2])
 		elif p[0] == 'Ugt' or p[0] == 'Sgt':
-			return run(p[1]) + ' greater then ' + run(p[2])
+			return run(p[1]) + ' greater than ' + run(p[2])
 		elif p[0] == 'Uge' or p[0] == 'Sge':
-			return run(p[1]) + ' greater then or equal ' + run(p[2])
+			return run(p[1]) + ' greater than or equal ' + run(p[2])
 		elif p[0] == 'var':
 		 	return p[1]
 		elif p[0] == 'Add':
@@ -336,11 +336,11 @@ def run(p):
 		elif p[0] == 'URem' or p[0] == 'SRem':
 		 	return run(p[1]) + ' % ' + run(p[2])
 		elif p[0] == 'And':
-		 	return run(p[1]) + ' /\ ' + run(p[2])
+		 	return run(p[1]) + ' and ' + run(p[2])
 		elif p[0] == 'Or':
-		 	return run(p[1]) + ' \/ ' + run(p[2])
+		 	return run(p[1]) + ' or ' + run(p[2])
 		elif p[0] == 'Xor':
-		 	return run(p[1]) + ' ^ ' + run(p[2])
+		 	return run(p[1]) + ' exclusive or ' + run(p[2])
 		elif p[0] == 'Shl':
 		 	return run(p[1]) + ' << ' + run(p[2])
 		elif p[0] == 'LShr' or p[0] == 'AShr':
