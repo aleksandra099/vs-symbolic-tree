@@ -23,28 +23,25 @@ opts,remainder = op.parse_args()
 maxDepth = int(opts.depth)
 pdfOutput = opts.pdfOutput
 
-print(maxDepth)
+#print(maxDepth)
 
 for filename in glob('klee-last/*.pc'):
     filesToInclude.append(os.path.splitext(filename)[0])
 
-#print(filesToInclude)
 
 #parsiranje sym.path fajlova i konstruisanje razlicitih putanja
 for filename in filesToInclude:
-    #print(filename)
     with open(filename+'.sym.path') as file:
 	#Jedna putanja se sastoji od n bitova (0,1) koji vode do lista. 0 oznacava da ulov nije ispunjen, 1 da jeste
         path = [int(line.rstrip()) for line in itertools.islice(file, 0, maxDepth)]
 	#paths je matrica stabla
         paths.append(path)
 
-print(paths)
+#print(paths)
 
 #parsiranje svih .pc fajlova redom i popunjavanje instrukcija
 pathsInstructions = []
 for instrFilename in filesToInclude:
-    #print(instrFilename)
     with open(instrFilename+'.pc') as instrFile:
         stuff = instrFile.read()
         st = re.sub(r'\s+', ' ', stuff)
@@ -56,21 +53,20 @@ for instrFilename in filesToInclude:
         for match in scanner.searchString(st1):
             instructions.append(match[0])
         pathsInstructions.append(instructions)
-
-print(pathsInstructions)
         
 #repl = re.search(r'\((Read.SB.+?)\)', st1).group(1).split()[-1]
 #st2 = re.sub(r'\((Read.SB.+?)\)', repl, st1)
 
+
 #Dodatni parametri numIt and parentNumIt, trebaju nam zbog crtanja u biblioteci graph
 class TreeNode:
     def __init__(self, cond, numIt, parentNumIt, instruction):
-        self.cond = cond	#dal se dolazi iz true ili false grane u cvor
+        self.cond = cond	#da li se dolazi iz true ili false grane u cvor
         self.numIt = numIt	#redni broj cvora
         self.left = self.right = None
         self.parentNumIt = parentNumIt	#redni broj roditelja
         self.instruction = instruction	#instrukcija koja se upisuje
-
+ 
 
 g = Digraph('g', filename=pdfOutput, node_attr={'shape': 'record', 'height': '.1'})
 root = TreeNode("root", 0, None, None)
@@ -101,18 +97,19 @@ for path, pathInstruction in zip(paths, pathsInstructions):
         else:
             newNode = TreeNode('t' if branch else 'f', nodeNumIt, node.numIt, readableInstruction)
             setattr(node, side, newNode)
+            node.instruction = readableInstruction
             node = newNode
             nodeNumIt += 1
 
 #for path in paths:
 #    node = root
-    #Go through all branches in one path and fill the tree for the missing nodes
+   #Go through all branches in one path and fill the tree for the missing nodes
 #    for branch in path:
 #        side = 'left' if branch else 'right'
 #        if getattr(node, side) is not None:
 #            node = getattr(node, side)
 #        else:
-#            newNode = TreeNode('t' if branch else 'f', nodeNumIt, node.numIt)
+#            newNode = TreeNode('t' if branch else 'f', nodeNumIt, node.numIt, '0')
 #            setattr(node, side, newNode)
 #            node = newNode
 #            nodeNumIt += 1
@@ -130,11 +127,10 @@ def preorder(node, level=0):
     preorder(node.right, level+1)
     if(level != 0):
 	#Povezivanje noda sa roditeljem
-        g.edge('node'+str(node.parentNumIt), 'node'+str(node.numIt), label=node.cond + ': ' + node.instruction)
-
-print(paths)
+        #g.edge('node'+str(node.parentNumIt), 'node'+str(node.numIt), label =  node.cond + ': ' + node.instruction)
+         g.edge('node'+str(node.parentNumIt), 'node'+str(node.numIt), label =  node.cond)
 
 preorder(root)
 #Print debugging
-print(g.source)
+#print(g.source)
 g.view()

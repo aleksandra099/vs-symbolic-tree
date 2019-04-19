@@ -245,15 +245,15 @@ def p_expression_read(p):
 
 def p_expression_refn_type(p):
 	'''
-	expression : TYPE REFN DOTS LP READ TYPE INT NAME RP
+	expression : TYPE REFN DOTS expression
 	'''
-	p[0] = ('ref',p[2],p[8])
+	p[0] = ('ref',p[2],p[4])
 
 def p_expression_refn(p):
 	'''
-	expression : REFN DOTS LP READ TYPE INT NAME RP
+	expression : REFN DOTS expression
 	'''
-	p[0] = ('ref',p[1],p[7])
+	p[0] = ('ref',p[1],p[3])
 
 def p_expression_refn_var(p):
 	'''
@@ -316,13 +316,13 @@ def run(p):
 		elif p[0] == 'Ne':
 			return run(p[1]) + ' != ' + run(p[2])
 		elif p[0] == 'Ult' or p[0] == 'Slt':
-			return run(p[1]) + ' < ' + run(p[2])
+			return run(p[1]) + ' less then ' + run(p[2])
 		elif p[0] == 'Ule' or p[0] == 'Sle':
-			return run(p[1]) + ' <= ' + run(p[2])
+			return run(p[1]) + ' less then or equal ' + run(p[2])
 		elif p[0] == 'Ugt' or p[0] == 'Sgt':
-			return run(p[1]) + ' > ' + run(p[2])
+			return run(p[1]) + ' greater then ' + run(p[2])
 		elif p[0] == 'Uge' or p[0] == 'Sge':
-			return run(p[1]) + ' >= ' + run(p[2])
+			return run(p[1]) + ' greater then or equal ' + run(p[2])
 		elif p[0] == 'var':
 		 	return p[1]
 		elif p[0] == 'Add':
@@ -349,7 +349,7 @@ def run(p):
 			return p[1]
 		elif p[0] == 'ref':
 			env[p[1]] = run(p[2])
-			return p[2]
+			return run(p[2])
 		elif p[0] == 'refn':
 			if p[1] not in env:
 				return 'Undeclared variable found!'
