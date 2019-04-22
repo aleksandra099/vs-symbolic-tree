@@ -243,13 +243,13 @@ def p_expression_read(p):
 	'''
 	p[0] = ('read',p[5])
 
-def p_expression_refn_type(p):
+def p_expression_ref_type(p):
 	'''
 	expression : TYPE REFN DOTS expression
 	'''
 	p[0] = ('ref',p[2],p[4])
 
-def p_expression_refn(p):
+def p_expression_ref(p):
 	'''
 	expression : REFN DOTS expression
 	'''
@@ -260,6 +260,12 @@ def p_expression_refn_var(p):
 	expression : REFN	
 	'''
 	p[0] = ('refn',p[1])
+
+def p_expression_refn_var_type(p):
+	'''
+	expression : TYPE REFN	
+	'''
+	p[0] = ('refn',p[2])
 
 def p_expression_add(p):
 	'''
