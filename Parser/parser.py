@@ -316,19 +316,19 @@ def run(p):
 	global env
 	if type(p) == tuple:
 		if p[0] == 'Eq' and p[1] == 'false':
-			return 'not (' + run(p[2]) + ')'
+			return '\! (' + run(p[2]) + ')'
 		elif p[0] == 'Eq':
-			return run(p[1]) + ' equal ' + run(p[2])
+			return run(p[1]) + '\=\=' + run(p[2])
 		elif p[0] == 'Ne':
-			return run(p[1]) + ' not equal ' + run(p[2])
+			return run(p[1]) + '\!\=' + run(p[2])
 		elif p[0] == 'Ult' or p[0] == 'Slt':
-			return run(p[1]) + ' less than ' + run(p[2])
+			return run(p[1]) + '\<' + run(p[2])
 		elif p[0] == 'Ule' or p[0] == 'Sle':
-			return run(p[1]) + ' less than or equal ' + run(p[2])
+			return run(p[1]) + '\<\=' + run(p[2])
 		elif p[0] == 'Ugt' or p[0] == 'Sgt':
-			return run(p[1]) + ' greater than ' + run(p[2])
+			return run(p[1]) + '\>' + run(p[2])
 		elif p[0] == 'Uge' or p[0] == 'Sge':
-			return run(p[1]) + ' greater than or equal ' + run(p[2])
+			return run(p[1]) + '\>\=' + run(p[2])
 		elif p[0] == 'var':
 		 	return p[1]
 		elif p[0] == 'Add':
