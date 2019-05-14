@@ -223,7 +223,7 @@ def p_expression_eq(p):
 			| LP GT expression expression RP
 			| LP GE expression expression RP
 	'''
-	p[0] = (p[2],p[4],p[3])
+	p[0] = (p[2],p[3],p[4])
 
 def p_expression_eq_false(p):
 	'''
@@ -318,17 +318,17 @@ def run(p):
 		if p[0] == 'Eq' and p[1] == 'false':
 			return '\! (' + run(p[2]) + ')'
 		elif p[0] == 'Eq':
-			return run(p[1]) + '\=\=' + run(p[2])
+			return run(p[2]) + '\=\=' + run(p[1])
 		elif p[0] == 'Ne':
-			return run(p[1]) + '\!\=' + run(p[2])
+			return run(p[2]) + '\!\=' + run(p[1])
 		elif p[0] == 'Ult' or p[0] == 'Slt':
-			return run(p[1]) + '\<' + run(p[2])
+			return run(p[2]) + '\>' + run(p[1])
 		elif p[0] == 'Ule' or p[0] == 'Sle':
-			return run(p[1]) + '\<\=' + run(p[2])
+			return run(p[2]) + '\>\=' + run(p[1])
 		elif p[0] == 'Ugt' or p[0] == 'Sgt':
-			return run(p[1]) + '\>' + run(p[2])
+			return run(p[2]) + '\<' + run(p[1])
 		elif p[0] == 'Uge' or p[0] == 'Sge':
-			return run(p[1]) + '\>\=' + run(p[2])
+			return run(p[2]) + '\<\=' + run(p[1])
 		elif p[0] == 'var':
 		 	return p[1]
 		elif p[0] == 'Add':
