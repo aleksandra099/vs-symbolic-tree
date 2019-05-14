@@ -1,5 +1,5 @@
-from Parser.ply import lex as lex
-from Parser.ply import yacc as yacc
+from ply import lex as lex
+from ply import yacc as yacc
 import sys
 
 tokens = [
