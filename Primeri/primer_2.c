@@ -1,15 +1,9 @@
 #include <stdio.h>
 #include <klee/klee.h>
 
-int main(int argc, char **argv)
-{
-  char s[]="PozdravStudenti!";
-  int p1, p2, p3;
+void nebitno(int p1, int p2, int p3) {
+    char s[]="PozdravStudenti!";
   char *p;
-
-  klee_make_symbolic(&p1, sizeof(int), "p1");
-  klee_make_symbolic(&p2, sizeof(int), "p2");
-  klee_make_symbolic(&p3, sizeof(int), "p3");
 
   p = s;
 
@@ -28,7 +22,18 @@ int main(int argc, char **argv)
   } else {
     p += 9;
   }
+}
 
-  return *p;
+int main(int argc, char **argv)
+{
+  char s[]="PozdravStudenti!";
+  int p1, p2, p3;
+  char *p;
+
+  klee_make_symbolic(&p1, sizeof(int), "p1");
+  klee_make_symbolic(&p2, sizeof(int), "p2");
+  klee_make_symbolic(&p3, sizeof(int), "p3");
+
+  nebitno(p1,p2,p3);
 }
 
