@@ -131,8 +131,14 @@ for path, pathInstruction in zip(paths, pathsInstructions):
 def preorder(node, level=0):
     if node is None:
         return
+    
     #Inicijalizacija
-    g.node('node'+str(node.numIt), node.instruction)
+    if (node.left is None):
+        node.instruction = 'end'
+    else:
+        node.instruction = node.left.instruction
+    g.node('node' + str(node.numIt), node.instruction)
+
     #debugging print
     #print(" " * (level*4), node.cond, node.numIt, node.instruction)
     preorder(node.left, level+1)
