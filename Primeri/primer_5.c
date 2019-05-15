@@ -1,9 +1,8 @@
 #include <klee/klee.h>
 
-int main()
+int primer(int a0, int a1,int a2, int a3, int a4)
 {
 	int k, n = 0;
-	int a0, a1, a2, a3, a4;
 
 	klee_make_symbolic(&a0, sizeof(a0), "a0");
 	klee_make_symbolic(&a1, sizeof(a1), "a1");
@@ -34,5 +33,20 @@ int main()
 
 	n = (a0 + a1 + a2 + a3 + a4);
 
-	k = k / (n + 5);
+	return 1;
+}
+
+
+
+int main(int argc, char* argv[]) {
+  int a0, a1, a2, a3, a4;
+
+  klee_make_symbolic(&a0, sizeof(int),"a0");
+  klee_make_symbolic(&a1, sizeof(int),"a1");
+  klee_make_symbolic(&a2, sizeof(int),"a2");
+  klee_make_symbolic(&a3, sizeof(int),"a3");
+  klee_make_symbolic(&a4, sizeof(int),"a4");
+
+
+  return primer( a0, a1, a2, a3, a4);
 }
