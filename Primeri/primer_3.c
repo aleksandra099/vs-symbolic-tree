@@ -20,7 +20,7 @@ int main()
   
   klee_make_symbolic(&x, sizeof(x), "x");
 		
-  if(x>200) 
+  if(x>80) 
      return 0;
   int no = isPrime(x);
 
