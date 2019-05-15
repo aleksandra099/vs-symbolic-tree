@@ -91,7 +91,7 @@ Primer pokretanja:\\ \textit{./makeTree.sh /Downloads/07\_materijali/pointer\_er
 
 \subsection{Ukratko o koracima}
 
-Izvršavanje alata Klee za sobom ostavlja fajlove koje smo koristili za iscrtavanje. U odgovarajućim fajlovima sa ekstenzijom \textbf{.pc} nalaze se instrukcije napisane u obliku koji nama nije odgovarajući za čitljivo ispisivanje stanja u čvorovima stabla. Zato je potrebno prilagoditi ispis korišćenjem parsera \textbf{parser.py} koji se nalazi u folderu \textbf{Parser}. Vrši se analiza, parsiranje i odgovarajuće iscrtavanje stabla, sa detaljima o stanju i putanjama u okviru čvorova, koje je dato u PDF fajlu nakon izvršavanja. Detaljno objašnjenje svake linije koda neće biti dato u tekstu.
+Izvršavanje alata Klee za sobom ostavlja fajlove koje smo koristili za iscrtavanje. U odgovarajućim fajlovima sa ekstenzijom \textbf{.pc} nalaze se instrukcije napisane u obliku koji nama nije odgovarajući za čitljivo ispisivanje instrukcija u čvorovima stabla. Zato je potrebno prilagoditi ispis korišćenjem parsera \textbf{parser.py} koji se nalazi u folderu \textbf{Parser}. Vrši se analiza, parsiranje i odgovarajuće iscrtavanje stabla, sa detaljima o putanjama u okviru čvorova, koje je dato u PDF fajlu kreiranom nakon izvršavanja. Detaljno objašnjenje svake linije koda neće biti dato u tekstu.
 
 \subsection{Drugi način pokretanja}
 Ukoliko dodje do nekih grešaka u toku pokretanja skripte \textit{makeTree.sh}, moguće je samostalno pokretati jednu po jednu liniju u sledećem poretku kako bi se došlo do istog krajnjeg cilja:\\
@@ -99,18 +99,18 @@ Ukoliko dodje do nekih grešaka u toku pokretanja skripte \textit{makeTree.sh}, 
 \begin{itemize}
     \item {Generisanje llvm koda: \textbf{myclang -I \{path\_to\_klee\_include\} -emit-llvm -c -g \{name\_of\_the\_file\}.c}, nakon čega dobijamo \{name\_of\_the\_file\}.bc fajl}
     
-    \item {Prepuštanje dobijenog fajla Klee alatu: \textbf{myklee --write-sym-paths --write-pcs \{name\_of\_the\_file\}.bc}, nakon čega dobijamo odgovarajuće foldere}
+    \item {Prepuštanje dobijenog fajla Klee alatu: \textbf{myklee --write-sym-paths --write-pcs \{name\_of\_the\_file\}.bc}, nakon čega dobijamo odgovarajuće foldere sa test primerima i putanjama}
     
-    \item {Pokretanje našeg programa: \textbf{python3 sym\_tree.py -d 10}}
+    \item {Pokretanje našeg python koda za kreiranje stabla: \textbf{python3 sym\_tree.py -d 10}}
 \end{itemize}
 
 
 \section{Primer rezultata}
-Na slici \ref{fig:primer} prikazan je jedan rezultat dobijen analizom nekog C programa. U čvorovima su ispisani uslovi koji se ispituju, grane su obeležene kao \textit{t} ili \textit{f} ako pretstavljaju da li je u toj putanji uslov iz čvora ispunjen ili ne. U listovima \textit{END} predstavlja kraj jedne od putanja.
+Na slici \ref{fig:primer} prikazan je jedan rezultat dobijen analizom nekog C programa. U čvorovima su ispisani uslovi koji se ispituju, grane su obeležene kao \textit{t} ili \textit{f} ako pretstavljaju da li je u toj putanji uslov iz čvora ispunjen ili ne. U listovima oznaka \textit{end} predstavlja kraj jedne od putanja.
 
 \begin{figure}[h!]
 \begin{center}
-\includegraphics[scale=0.3]{primer.jpg}
+\includegraphics[scale=0.6]{primer.jpg}
 \end{center}
 \caption{Primer jednog stabla simboličkog izvršavanja}
 \label{fig:primer}
