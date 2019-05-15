@@ -76,9 +76,6 @@ nodeNumIt = 1
 #sve putanje mecovane sa instrukcijama
 for path, pathInstruction in zip(paths, pathsInstructions):
     node = root
-    #duzina svake od putanja 
-    sizeOfPath = len(path)
-    i = 1;
 
     #jedna putanje se mecuje sa njenom istrukcijom
     for branch, instruction in zip(path, pathInstruction):
@@ -95,20 +92,13 @@ for path, pathInstruction in zip(paths, pathsInstructions):
         #provera ispisuje parsiranje na stdout
         parser.parse(readableInstructionTemp)
 
-        #Ako je stiglo do cvora, ne ispisuj komandu u cvoru, nego END
-        if(i == sizeOfPath):
-             nodeLabel = "END"
-        else:
-             nodeLabel = readableInstruction
-        i = i + 1
 
         side = 'left' if branch else 'right'
         if getattr(node, side) is not None: #ako taj nod nema to dete
             node = getattr(node, side)
         else:
-            newNode = TreeNode('t' if branch else 'f', nodeNumIt, node.numIt, nodeLabel)
+            newNode = TreeNode('t' if branch else 'f', nodeNumIt, node.numIt, readableInstruction)
             setattr(node, side, newNode)
-            node.instruction = readableInstruction
             node = newNode
             nodeNumIt += 1
             
