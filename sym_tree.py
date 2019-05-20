@@ -60,23 +60,27 @@ for instrFilename in filesToInclude:
 
 #Dodatni parametri numIt and parentNumIt, trebaju nam zbog crtanja u biblioteci graph
 class TreeNode:
-    def __init__(self, cond, numIt, parentNumIt, instruction):
+    def __init__(self, cond, numIt, parentNumIt, instruction, full_path):
         self.cond = cond	#da li se dolazi iz true ili false grane u cvor
         self.numIt = numIt	#redni broj cvora
         self.left = self.right = None
         self.parentNumIt = parentNumIt	#redni broj roditelja
         self.instruction = instruction	#instrukcija koja se upisuje
+        self.full_path = full_path    #cuvanje cele putanje do cvora kroz stablo za dodatan ispis
  
 
 g = Digraph('g', filename=pdfOutput, node_attr={'shape': 'record', 'height': '.1'})
-root = TreeNode("root", 0, None, None)
+root = TreeNode("root", 0, None, None, None)
 g.node('node0', '')
 nodeNumIt = 1
 
 #sve putanje mecovane sa instrukcijama
 for path, pathInstruction in zip(paths, pathsInstructions):
     node = root
-
+    
+    full_path = '( ' ;
+    k = 0;
+   
     #jedna putanje se mecuje sa njenom istrukcijom
     for branch, instruction in zip(path, pathInstruction):
         #repl = re.search(r'\((Read.SB.+?)\)', instruction).group(1).split()[-1]
@@ -92,16 +96,24 @@ for path, pathInstruction in zip(paths, pathsInstructions):
         #provera ispisuje parsiranje na stdout
         parser.parse(readableInstructionTemp)
 
+  
+        if (k == 0 ):
+        	full_path = full_path + '(' + readableInstruction + ')'
+        elif (k == len(path) - 1 ):
+        	full_path = full_path + ' AND (' + readableInstruction + ')' + ' ) ';
+        else:
+        	full_path = full_path + ' AND (' + readableInstruction + ')'
+        k += 1
 
         side = 'left' if branch else 'right'
         if getattr(node, side) is not None: #ako taj nod nema to dete
             node = getattr(node, side)
         else:
-            newNode = TreeNode('t' if branch else 'f', nodeNumIt, node.numIt, readableInstruction)
+            newNode = TreeNode('t' if branch else 'f', nodeNumIt, node.numIt, readableInstruction, full_path )
             setattr(node, side, newNode)
             node = newNode
             nodeNumIt += 1
-            
+
 
 #for path in paths:
 #    node = root
@@ -124,10 +136,10 @@ def preorder(node, level=0):
     
     #Inicijalizacija
     if (node.left is None):
-        node.instruction = 'end'
+        node.instruction = 'END NODE; '  + node.full_path 
     else:
         node.instruction = node.left.instruction
-    g.node('node' + str(node.numIt), node.instruction)
+    g.node('node' + str(node.numIt), node.instruction  )
 
     #debugging print
     #print(" " * (level*4), node.cond, node.numIt, node.instruction)
@@ -136,7 +148,7 @@ def preorder(node, level=0):
     if(level != 0):
 	#Povezivanje noda sa roditeljem
         #g.edge('node'+str(node.parentNumIt), 'node'+str(node.numIt), label =  node.cond + ': ' + node.instruction)
-         g.edge('node'+str(node.parentNumIt), 'node'+str(node.numIt), label =  node.cond)
+         g.edge('node'+str(node.parentNumIt), 'node'+str(node.numIt), label =  node.cond  )
 
 preorder(root)
 #Print debugging
