@@ -13,6 +13,6 @@
 
 - Procedure for running the program is as follows (NEW):
   - make makeTree.sh and sym_tree.py executable by running "chmod +x && chmod +x makeTree.sh"
-  - run makeTree.sh with "./makeTree.sh {absolute_path_to_c_file} {absolute_path_to_where_you_want_your_sym_tree_image}"
-    e.g. "./makeTree.sh ~/Downloads/07_materijali/pointer_error_sym.c ~/Downloads/drvo" => this will make drvo.pdf and drvo.gv
+  - run makeTree.sh with "./makeTree.sh {absolute_path_to_c_file} {absolute_path_to_where_you_want_your_sym_tree_image} {depth_number}"
+    e.g. "./makeTree.sh ~/Downloads/07_materijali/pointer_error_sym.c ~/Downloads/drvo 3" => this will make drvo.pdf and drvo.gv
     or simply run "./makeTree.sh -h" to see the usage
