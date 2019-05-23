@@ -1,7 +1,7 @@
 #/!bin/bash
 
 function usage {
-	echo -e "\nUsage: $0 [absoulte_path_to_c_file] [absoulte_path_to_save_image]"
+	echo -e "\nUsage: $0 [absoulte_path_to_c_file] [absoulte_path_to_save_image] [depth]"
 }
 
 
